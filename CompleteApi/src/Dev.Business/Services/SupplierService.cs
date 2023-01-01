@@ -17,31 +17,33 @@ namespace Dev.Business.Services
             _addressRepository = addressRepository;
         }
 
-        public async Task Add(Supplier supplier)
+        public async Task<bool> Add(Supplier supplier)
         {
             if(!ValidationExecute(new SupplierValidation(), supplier)
-                || !ValidationExecute(new AddressValidation(), supplier.Address)) return;
+                || !ValidationExecute(new AddressValidation(), supplier.Address)) return false;
 
             if(_supplierRepository.Search(s => s.Document == supplier.Document).Result.Any())
             {
                 Notify("There is already a supplier with the same document");
-                return;
+                return false;
             }
 
             await _supplierRepository.Add(supplier);
+            return true;
         }
 
-        public async Task Update(Supplier supplier)
+        public async Task<bool> Update(Supplier supplier)
         {
-            if (!ValidationExecute(new SupplierValidation(), supplier)) return;
+            if (!ValidationExecute(new SupplierValidation(), supplier)) return false;
 
             if (_supplierRepository.Search(s => s.Document == supplier.Document && s.Id != supplier.Id).Result.Any())
             {
                 Notify("There is already a supplier with the same informed document");
-                return;
+                return false;
             }
 
             await _supplierRepository.Update(supplier);
+            return true;
         }
 
         public async Task AddressUpdate(Address address)
@@ -51,15 +53,23 @@ namespace Dev.Business.Services
             await _addressRepository.Update(address);
         }
 
-        public async Task Remove(Guid id)
+        public async Task<bool> Remove(Guid id)
         {
             if(_supplierRepository.GetSupplierProductsAddress(id).Result.Products.Any())
             {
                 Notify("The supplier has products attached to it!");
-                return;
+                return false;
+            }
+
+            var address = await _addressRepository.GetAddressBySupplier(id);
+
+            if(address != null)
+            {
+                await _addressRepository.DeleteById(address.Id);
             }
 
             await _supplierRepository.DeleteById(id);
+            return true;
         }
 
         public void Dispose()

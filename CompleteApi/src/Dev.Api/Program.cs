@@ -1,4 +1,5 @@
 using Dev.Api.Configuration;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,10 @@ builder.Services.AddSwaggerGen();
 
 // Dependency Injection configuration
 builder.Services.ResolveDependencies();
+
+builder.Services.Configure<ApiBehaviorOptions>(options => {
+    options.SuppressModelStateInvalidFilter = true;
+});
 
 var app = builder.Build();
 
