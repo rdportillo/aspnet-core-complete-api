@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
+﻿using Dev.Api.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dev.Api.DTO
 {
-    public class ProductDto
+    [ModelBinder(typeof(ProductModelBinder), Name = "product")]
+    public class ProductImageDto
     {
         [Key]
         public Guid Id { get; set; }
@@ -19,7 +21,7 @@ namespace Dev.Api.DTO
         [StringLength(1000, ErrorMessage = "The {0} field have between {2} and {1} characters", MinimumLength = 2)]
         public string Description { get; set; }
 
-        public string ImageUpload { get; set; }
+        public IFormFile ImageUpload { get; set; }
 
         public string Image { get; set; }
 

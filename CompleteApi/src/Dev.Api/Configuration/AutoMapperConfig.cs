@@ -10,7 +10,12 @@ namespace Dev.Api.Configuration
         {
             CreateMap<Supplier, SupplierDto>().ReverseMap();
             CreateMap<Address, AddressDto>().ReverseMap();
-            CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<ProductDto, Product>();
+            CreateMap<ProductImageDto, Product>();
+            CreateMap<Product, ProductImageDto>()
+                .ForMember(dest => dest.SupplierName, options => options.MapFrom(src => src.Supplier.Name));
+            CreateMap<Product, ProductDto>()
+                .ForMember(dest => dest.SupplierName, options => options.MapFrom(src => src.Supplier.Name));
         }
     }
 }
