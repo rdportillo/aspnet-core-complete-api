@@ -1,4 +1,5 @@
-﻿using Dev.Business.Interfaces;
+﻿using Dev.Api.Data;
+using Dev.Business.Interfaces;
 using Dev.Business.Notifications;
 using Dev.Business.Services;
 using Dev.Data.Context;
@@ -18,6 +19,8 @@ namespace Dev.Api.Configuration
             services.AddScoped<INotifier, Notifier>();
             services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<IProductService, ProductService>();
+
+            services.AddScoped<ApiIdentityDbContext>();
 
             return services;
         }

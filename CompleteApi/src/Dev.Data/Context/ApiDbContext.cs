@@ -5,7 +5,7 @@ namespace Dev.Data.Context
 {
     public class ApiDbContext : DbContext
     {
-        public ApiDbContext(DbContextOptions options) : base(options)
+        public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             ChangeTracker.AutoDetectChangesEnabled = false;
