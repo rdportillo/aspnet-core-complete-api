@@ -6,7 +6,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\product_images\0650984e-3a7e-481d-934b-8b5c3d348334_SuperMarioOdissey.jpg" />
+    <Content Remove="wwwroot\product_images\153f3a7e-6dbd-4e09-9382-3d84a198d61f_7954294.jpeg" />
+    <Content Remove="wwwroot\product_images\86319a28-64a4-437b-9cd8-952d64834297_7954294.jpeg" />
+    <Content Remove="wwwroot\product_images\8c27f9a8-d121-4e5c-9148-c1e1e90ad85c_7954294.jpeg" />
+    <Content Remove="wwwroot\product_images\941118ac-4b06-499d-9762-3549775adacb_7954294.jpeg" />
+    <Content Remove="wwwroot\product_images\99d4b108-24aa-4a6a-a2df-36f3f38a6e28_7954294.jpeg" />
+    <Content Remove="wwwroot\product_images\ad47d456-5790-4177-bd7c-41c11129e42b_7954294.jpeg" />
+    <Content Remove="wwwroot\product_images\f5a321da-1540-42e0-a430-aba316e57d16_7954294.jpeg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.12">
       <PrivateAssets>all</PrivateAssets>
@@ -19,10 +33,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Dev.Business\Dev.Business.csproj" />
     <ProjectReference Include="..\Dev.Data\Dev.Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\product_images\" />
   </ItemGroup>
 
 </Project>
