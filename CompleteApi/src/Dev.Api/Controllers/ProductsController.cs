@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
+using Dev.Api.Attributes;
 using Dev.Api.DTO;
 using Dev.Business.Interfaces;
 using Dev.Business.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.CompilerServices;
 
 namespace Dev.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class ProductsController : MainController
     {
@@ -17,7 +19,8 @@ namespace Dev.Api.Controllers
         public ProductsController(IProductRepository productRepository,
                                   IProductService productService,
                                   IMapper mapper,
-                                  INotifier notifier) : base(notifier)
+                                  INotifier notifier,
+                                  IUser user) : base(notifier, user)
         {
             _productRepository = productRepository;
             _productService = productService;
@@ -40,6 +43,7 @@ namespace Dev.Api.Controllers
             return productDto;
         }
 
+        [ClaimsAuthorize("Products", "Add")]
         [HttpPost]
         public async Task<ActionResult<ProductDto>> Add(ProductDto productDto)
         {
@@ -55,6 +59,7 @@ namespace Dev.Api.Controllers
             return CustomResponse(productDto);
         }
 
+        [ClaimsAuthorize("Products", "Add")]
         [HttpPost("add")]
         public async Task<ActionResult<ProductDto>> AddAlternative(ProductImageDto productImageDto)
         {
@@ -73,6 +78,7 @@ namespace Dev.Api.Controllers
             return CustomResponse(productImageDto);
         }
 
+        [ClaimsAuthorize("Products", "Add")]
         [RequestSizeLimit(1000000)]
         [HttpPost("image")]
         public async Task<ActionResult<ProductDto>> AddImage(IFormFile image)
@@ -80,6 +86,7 @@ namespace Dev.Api.Controllers
             return Ok(image);
         }
 
+        [ClaimsAuthorize("Products", "Edit")]
         [HttpPut("{id:guid}")]
         public async Task<ActionResult> Update(Guid id, ProductDto productDto)
         {
@@ -115,6 +122,7 @@ namespace Dev.Api.Controllers
             return CustomResponse(productDto);
         }
 
+        [ClaimsAuthorize("Products", "Delete")]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult<ProductDto>> Delete(Guid id)
         {

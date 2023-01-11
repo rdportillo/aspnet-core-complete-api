@@ -1,4 +1,5 @@
 ﻿using Dev.Api.Data;
+using Dev.Api.Extensions;
 using Dev.Business.Interfaces;
 using Dev.Business.Notifications;
 using Dev.Business.Services;
@@ -21,6 +22,9 @@ namespace Dev.Api.Configuration
             services.AddScoped<IProductService, ProductService>();
 
             services.AddScoped<ApiIdentityDbContext>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IUser, AspNetUser>();
 
             return services;
         }

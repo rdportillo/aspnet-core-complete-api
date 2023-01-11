@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using Dev.Api.Attributes;
 using Dev.Api.DTO;
 using Dev.Business.Interfaces;
 using Dev.Business.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dev.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class SuppliersController : MainController
     {
@@ -18,7 +21,8 @@ namespace Dev.Api.Controllers
                                    ISupplierService supplierService,
                                    IMapper mapper,
                                    INotifier notifier,
-                                   IAddressRepository addressRepository) : base(notifier)
+                                   IAddressRepository addressRepository,
+                                   IUser user) : base(notifier, user)
         {
             _supplierRepository = supplierRepository;
             _supplierService = supplierService;
@@ -44,6 +48,7 @@ namespace Dev.Api.Controllers
             return supplier;
         }
 
+        [ClaimsAuthorize("Suppliers", "Add")]
         [HttpPost]
         public async Task<ActionResult<SupplierDto>> Add(SupplierDto supplierDto)
         {
@@ -54,6 +59,7 @@ namespace Dev.Api.Controllers
             return CustomResponse(supplierDto);
         }
 
+        [ClaimsAuthorize("Suppliers", "Edit")]
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<SupplierDto>> Update(Guid id, SupplierDto supplierDto)
         {
@@ -70,6 +76,7 @@ namespace Dev.Api.Controllers
             return CustomResponse(supplierDto);
         }
 
+        [ClaimsAuthorize("Suppliers", "Delete")]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult<SupplierDto>> Delete(Guid id)
         {
@@ -88,6 +95,7 @@ namespace Dev.Api.Controllers
             return _mapper.Map<AddressDto>(await _addressRepository.GetById(id));
         }
 
+        [ClaimsAuthorize("Suppliers", "Edit")]
         [HttpPut("update-address/{id:guid}")]
         public async Task<ActionResult> UpdateAddress(Guid id, AddressDto addressDto)
         {
@@ -104,12 +112,12 @@ namespace Dev.Api.Controllers
             return CustomResponse(addressDto);
         }
 
-        public async Task<SupplierDto> GetSupplierProductsAddress(Guid id)
+        private async Task<SupplierDto> GetSupplierProductsAddress(Guid id)
         {
             return _mapper.Map<SupplierDto>(await _supplierRepository.GetSupplierProductsAddress(id));
         }
 
-        public async Task<SupplierDto> GetSupplierAddress(Guid id)
+        private async Task<SupplierDto> GetSupplierAddress(Guid id)
         {
             return _mapper.Map<SupplierDto>(await _supplierRepository.GetSupplierAddress(id));
         }
