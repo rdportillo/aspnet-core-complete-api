@@ -1,7 +1,4 @@
 using Dev.Api.Configuration;
-using Dev.Api.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +22,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+} else
+{
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
