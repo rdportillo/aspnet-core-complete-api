@@ -5,6 +5,8 @@ using Dev.Business.Notifications;
 using Dev.Business.Services;
 using Dev.Data.Context;
 using Dev.Data.Repository;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Dev.Api.Configuration
 {
@@ -25,6 +27,8 @@ namespace Dev.Api.Configuration
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUser, AspNetUser>();
+
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfigOptions>();
 
             return services;
         }
