@@ -14,7 +14,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       //"launchUrl": "swagger",
-      "launchUrl": "api/suppliers",
+      "launchUrl": "api/v1/suppliers",
       "applicationUrl": "https://localhost:7079;http://localhost:5079",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -24,7 +24,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       //"launchUrl": "swagger",
-      "launchUrl": "api/suppliers",
+      "launchUrl": "api/v1/suppliers",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -33,7 +33,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       //"launchUrl": "swagger",
-      "launchUrl": "api/suppliers",
+      "launchUrl": "api/v1/suppliers",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       }

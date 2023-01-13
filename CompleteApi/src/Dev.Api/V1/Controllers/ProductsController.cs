@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
 using Dev.Api.Attributes;
+using Dev.Api.Controllers;
 using Dev.Api.DTO;
 using Dev.Business.Interfaces;
 using Dev.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Dev.Api.Controllers
+namespace Dev.Api.V1.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class ProductsController : MainController
     {
         private readonly IProductRepository _productRepository;
@@ -90,7 +92,8 @@ namespace Dev.Api.Controllers
         [HttpPut("{id:guid}")]
         public async Task<ActionResult> Update(Guid id, ProductDto productDto)
         {
-            if (id != productDto.Id) {
+            if (id != productDto.Id)
+            {
                 NotifyError("The informed Ids are not the same!");
                 return CustomResponse();
             }
@@ -100,11 +103,11 @@ namespace Dev.Api.Controllers
 
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            if(productDto.ImageUpload != null)
+            if (productDto.ImageUpload != null)
             {
                 var imageName = Guid.NewGuid() + "_" + productDto.Image;
 
-                if(!FileUpload(productDto.ImageUpload, imageName))
+                if (!FileUpload(productDto.ImageUpload, imageName))
                 {
                     return CustomResponse(ModelState);
                 }
@@ -143,7 +146,7 @@ namespace Dev.Api.Controllers
 
         private bool FileUpload(string file, string imageName)
         {
-            if(file == null || file.Length <=0)
+            if (file == null || file.Length <= 0)
             {
                 NotifyError("Provide an image to this product!");
                 return false;
@@ -152,7 +155,7 @@ namespace Dev.Api.Controllers
             var imageDateByteArray = Convert.FromBase64String(file);
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/product_images", imageName);
 
-            if(System.IO.File.Exists(filePath))
+            if (System.IO.File.Exists(filePath))
             {
                 NotifyError("There is already a file with the same name!");
                 return false;
@@ -178,11 +181,11 @@ namespace Dev.Api.Controllers
                 return false;
             }
 
-            using(var stream = new FileStream(filePath, FileMode.Create))
+            using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
-            
+
             return true;
         }
     }

@@ -1,4 +1,5 @@
-﻿using Dev.Api.DTO;
+﻿using Dev.Api.Controllers;
+using Dev.Api.DTO;
 using Dev.Api.Extensions;
 using Dev.Business.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -9,9 +10,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Dev.Api.Controllers
+namespace Dev.Api.V1.Controllers
 {
-    [Route("api/account")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/account")]
     public class AuthController : MainController
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -45,7 +47,7 @@ namespace Dev.Api.Controllers
             };
 
             var result = await _userManager.CreateAsync(user, registerUserDto.Password);
-            
+
             if (result.Succeeded)
             {
                 // isPersistent as false to avoid remember logged user in the future, since the log in action is being done automatically
@@ -68,11 +70,11 @@ namespace Dev.Api.Controllers
 
             var result = await _signInManager.PasswordSignInAsync(loginUserDto.Email, loginUserDto.Password, isPersistent: false, lockoutOnFailure: true);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 return CustomResponse(await GenerateJwt(loginUserDto.Email));
             }
-            if(result.IsLockedOut)
+            if (result.IsLockedOut)
             {
                 NotifyError("User has been blocked due to sign-in failed attempts");
                 return CustomResponse(loginUserDto);

@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
 using Dev.Api.Attributes;
+using Dev.Api.Controllers;
 using Dev.Api.DTO;
 using Dev.Business.Interfaces;
 using Dev.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Dev.Api.Controllers
+namespace Dev.Api.V1.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class SuppliersController : MainController
     {
         private readonly ISupplierRepository _supplierRepository;
@@ -82,7 +84,7 @@ namespace Dev.Api.Controllers
         {
             var supplierDto = await GetSupplierAddress(id);
 
-            if(supplierDto == null) return NotFound();
+            if (supplierDto == null) return NotFound();
 
             await _supplierService.Remove(id);
 
@@ -106,7 +108,7 @@ namespace Dev.Api.Controllers
             }
 
             if (!ModelState.IsValid) return CustomResponse(ModelState);
-            
+
             await _supplierService.AddressUpdate(_mapper.Map<Address>(addressDto));
 
             return CustomResponse(addressDto);
@@ -122,6 +124,6 @@ namespace Dev.Api.Controllers
             return _mapper.Map<SupplierDto>(await _supplierRepository.GetSupplierAddress(id));
         }
 
-        
+
     }
 }
